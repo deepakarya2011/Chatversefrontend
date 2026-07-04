@@ -1,0 +1,215 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Segoe UI',sans-serif;
+    overflow-x:hidden;
+}
+
+.home{
+    min-height:100vh;
+    background:#0f172a;
+    position:relative;
+    overflow:hidden;
+}
+
+/* Navbar */
+
+.navbar{
+    width:100%;
+    padding:20px 8%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    position:relative;
+     z-index:9999;
+}
+
+.logo{
+    color:white;
+    font-size:32px;
+    font-weight:700;
+    letter-spacing:1px;
+}
+
+.nav-links{
+    display:flex;
+    gap:15px;
+}
+
+.login-btn,
+.register-btn{
+    padding:10px 20px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:15px;
+    transition:0.3s;
+}
+
+.login-btn{
+    background:transparent;
+    color:white;
+    border:1px solid #475569;
+}
+
+.login-btn:hover{
+    background:#1e293b;
+}
+
+.register-btn{
+    background:#6366f1;
+    color:white;
+}
+
+.register-btn:hover{
+    transform:translateY(-2px);
+}
+
+/* Hero */
+
+.hero{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:80vh;
+    text-align:center;
+    padding:20px;
+    position:relative;
+    z-index:1;
+}
+
+.hero-content{
+    max-width:900px;
+}
+
+.hero-content h1{
+    color:white;
+    font-size:80px;
+    line-height:1.1;
+    margin-bottom:20px;
+}
+
+.hero-content p{
+    color:#cbd5e1;
+    font-size:22px;
+    margin-bottom:35px;
+}
+
+.start-chat-btn{
+    background:#6366f1;
+    color:white;
+    border:none;
+    padding:18px 40px;
+    border-radius:14px;
+    cursor:pointer;
+    font-size:18px;
+    transition:0.3s;
+}
+
+.start-chat-btn:hover{
+    transform:translateY(-5px);
+    box-shadow:0 10px 30px rgba(99,102,241,0.4);
+}
+
+/* Animated Background */
+
+.circle{
+    position:absolute;
+    border-radius:50%;
+    filter:blur(70px);
+    opacity:0.5;
+
+    pointer-events:none;
+}
+
+.circle1{
+    width:350px;
+    height:350px;
+    background:#4f46e5;
+
+    top:-80px;
+    left:-80px;
+
+    animation:float 8s infinite ease-in-out;
+}
+
+.circle2{
+    width:300px;
+    height:300px;
+    background:#7c3aed;
+
+    bottom:-50px;
+    right:-50px;
+
+    animation:float 10s infinite ease-in-out;
+}
+
+.circle3{
+    width:250px;
+    height:250px;
+    background:#2563eb;
+
+    top:40%;
+    left:60%;
+
+    animation:float 12s infinite ease-in-out;
+}
+
+@keyframes float{
+
+    0%{
+        transform:translateY(0px);
+    }
+
+    50%{
+        transform:translateY(-40px);
+    }
+
+    100%{
+        transform:translateY(0px);
+    }
+}
+
+/* Mobile */
+
+@media(max-width:768px){
+
+    .logo{
+        font-size:24px;
+    }
+
+    .hero-content h1{
+        font-size:45px;
+    }
+
+    .hero-content p{
+        font-size:18px;
+    }
+
+    .start-chat-btn{
+        width:100%;
+    }
+
+    .navbar{
+        padding:20px;
+    }
+}
+.logo{
+    color:white;
+    font-size:32px;
+    font-weight:700;
+
+    text-decoration:none;
+
+    cursor:pointer;
+}
+.blur{
+    pointer-events:none;
+}
+.circle{
+    pointer-events:none;
+}
