@@ -1,8 +1,10 @@
 import Navbar from "../components/Navbar";
 import "../css/Home.css";
+import { useNavigate } from "react-router-dom";
 
 
 function Home() {
+    const navigate = useNavigate();
     return (
         <div className="home">
 
@@ -25,7 +27,7 @@ function Home() {
                         with friends, teams and communities.
                     </p>
 
-                    <button className="start-chat-btn">
+                    <button className="start-chat-btn" onClick={() => navigate("/register")}>
                         Start Chat
                     </button>
 
