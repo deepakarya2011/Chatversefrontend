@@ -30,7 +30,7 @@ body {
     width: 100%;
     max-width: 480px;
     position: relative;
-    z-index: 10;
+    z-index: 20;
     text-align: center;
 }
 
@@ -74,6 +74,9 @@ body {
     font-size: 15px;
     outline: none;
     transition: .2s;
+    position: relative;
+    z-index: 20;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .register-form input:focus {
@@ -96,9 +99,14 @@ body {
     font-weight: 600;
     cursor: pointer;
     transition: .2s;
+    position: relative;
+    z-index: 20;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
 }
 
-.register-form button:hover {
+.register-form button:hover,
+.register-form button:active {
     transform: translateY(-3px);
     box-shadow: 0 10px 25px rgba(99,102,241,.35);
 }

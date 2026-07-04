@@ -10,20 +10,8 @@ function Navbar() {
 </Link>
 
       <div className="nav-links">
-
-        <Link to="/login">
-          <button className="login-btn">
-            Login
-          </button>
-        </Link>
-        
-
-        <Link to="/register">
-          <button className="register-btn">
-            Register
-          </button>
-        </Link>
-
+        <Link to="/login" className="login-btn">Login</Link>
+        <Link to="/register" className="register-btn">Register</Link>
       </div>
 
     </nav>

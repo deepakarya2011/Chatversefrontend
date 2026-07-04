@@ -29,7 +29,8 @@ body {
 .login-content {
     width: 100%;
     max-width: 440px;
-    z-index: 10;
+    z-index: 20;
+    position: relative;
     text-align: center;
 }
 
@@ -62,6 +63,9 @@ body {
     font-size: 15px;
     outline: none;
     transition: .2s;
+    position: relative;
+    z-index: 20;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .login-form input:focus {
@@ -84,9 +88,14 @@ body {
     color: white;
     transition: .2s;
     margin-top: 4px;
+    position: relative;
+    z-index: 20;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
 }
 
-.login-form button:hover {
+.login-form button:hover,
+.login-form button:active {
     transform: translateY(-3px);
     box-shadow: 0 10px 25px rgba(99,102,241,.4);
 }

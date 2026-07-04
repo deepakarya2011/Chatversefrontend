@@ -13,7 +13,6 @@ body {
     min-height: 100vh;
     background: #0f172a;
     position: relative;
-    overflow: hidden;
 }
 
 /* Navbar */
@@ -26,6 +25,7 @@ body {
     align-items: center;
     position: relative;
     z-index: 9999;
+    flex-wrap: nowrap;
 }
 
 .logo {
@@ -44,14 +44,17 @@ body {
 
 .login-btn,
 .register-btn {
-    padding: 9px 18px;
-    border: none;
+    padding: 9px 16px;
     border-radius: 10px;
     cursor: pointer;
     font-size: 14px;
     font-weight: 500;
     transition: .2s;
     text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .login-btn {
@@ -60,16 +63,17 @@ body {
     border: 1px solid #334155;
 }
 
-.login-btn:hover {
+.login-btn:hover, .login-btn:active {
     background: #1e293b;
 }
 
 .register-btn {
     background: #6366f1;
     color: white;
+    border: none;
 }
 
-.register-btn:hover {
+.register-btn:hover, .register-btn:active {
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(99,102,241,.4);
 }
@@ -176,11 +180,20 @@ body {
     }
 
     .navbar {
-        padding: 16px 20px;
+        padding: 14px 16px;
+    }
+
+    .logo {
+        font-size: 20px;
+    }
+
+    .login-btn, .register-btn {
+        padding: 8px 12px;
+        font-size: 13px;
     }
 
     .circle1, .circle2, .circle3 {
-        width: 200px;
-        height: 200px;
+        width: 180px;
+        height: 180px;
     }
 }
