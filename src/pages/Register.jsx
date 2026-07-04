@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 function Register() {
 
     const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
     const [name, setName] = useState("");
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
@@ -14,69 +15,44 @@ function Register() {
     const navigate = useNavigate();
 
     const handleRegister = async (e) => {
-
         e.preventDefault();
 
-        if (
-            !name ||
-            !username ||
-            !email ||
-            !password ||
-            !confirmPassword
-        ) {
+        if (!name || !username || !email || !password || !confirmPassword) {
             setError("Please fill all fields");
             return;
         }
-
         if (password.length < 6) {
             setError("Password must be at least 6 characters");
             return;
         }
-
         if (password !== confirmPassword) {
             setError("Passwords do not match");
             return;
         }
 
+        setError("");
+        setLoading(true);
         try {
-
             const response = await fetch(
                 `${import.meta.env.VITE_API_URL}/api/auth/register`,
                 {
                     method: "POST",
-
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-
-                    body: JSON.stringify({
-                        name,
-                        username,
-                        email,
-                        password
-                    })
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ name, username, email, password })
                 }
             );
-
             const data = await response.json();
-          
-            console.log(data);
-
-              if (response.ok) {
-
+            if (response.ok) {
                 alert("Registration Successful");
-
                 navigate("/login");
-
+            } else {
+                setError(data.message || "Registration failed");
             }
-
-
-        } catch (error) {
-
-            console.log(error);
-
+        } catch (err) {
+            setError("Cannot connect to server. Try again.");
+        } finally {
+            setLoading(false);
         }
-
     };
 
 
@@ -152,8 +128,8 @@ function Register() {
                             }
                         />
 
-                        <button type="submit">
-                            Create Account
+                        <button type="submit" disabled={loading}>
+                            {loading ? "Creating..." : "Create Account"}
                         </button>
 
                     </form>

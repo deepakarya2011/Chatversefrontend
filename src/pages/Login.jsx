@@ -10,55 +10,36 @@ function Login() {
 
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
-const navigate = useNavigate();
-   const handleLogin = async (e) => {
+    const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
-    e.preventDefault();
-
-    try {
-
-        const response = await fetch(
-            `${import.meta.env.VITE_API_URL}/api/auth/login`,
-            {
-                method: "POST",
-
-                headers: {
-                    "Content-Type": "application/json"
-                },
-
-                body: JSON.stringify({
-                    email,
-                    password
-                })
-            }
-        );
-
-        const data = await response.json();
-
-        console.log(data);
-
-        if (response.ok) {
-
-            console.log("Login Success");
-
-            localStorage.setItem(
-                "token",
-                data.token
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        setError("");
+        setLoading(true);
+        try {
+            const response = await fetch(
+                `${import.meta.env.VITE_API_URL}/api/auth/login`,
+                {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ email, password })
+                }
             );
-
-            alert("Login Successful");
-
-            navigate("/chat");
-
+            const data = await response.json();
+            if (response.ok) {
+                localStorage.setItem("token", data.token);
+                navigate("/chat");
+            } else {
+                setError(data.message || "Login failed");
+            }
+        } catch (err) {
+            setError("Cannot connect to server. Try again.");
+        } finally {
+            setLoading(false);
         }
-
-    } catch (error) {
-
-        console.log(error);
-
-    }
-
-};
+    };
 
     return (
 
@@ -78,6 +59,8 @@ const navigate = useNavigate();
                 </p>
 
                 <form className="login-form" onSubmit={handleLogin}>
+
+                    {error && <p className="error-msg">{error}</p>}
 
                     <input
                         type="email"
@@ -109,20 +92,15 @@ const navigate = useNavigate();
 
                     </div>
 
-                    <button type="submit">
-                        Login
+                    <button type="submit" disabled={loading}>
+                        {loading ? "Logging in..." : "Login"}
                     </button>
 
                 </form>
 
                 <div className="bottom-text">
-
                     Don't have an account?
-
-                    <span>
-                        Register
-                    </span>
-
+                    <span onClick={() => navigate("/register")}>Register</span>
                 </div>
 
             </div>

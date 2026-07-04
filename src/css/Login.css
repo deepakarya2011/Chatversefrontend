@@ -153,6 +153,7 @@ body {
     filter: blur(90px);
     opacity: 0.5;
     pointer-events: none;
+    z-index: 0;
 }
 
 .blur1 {

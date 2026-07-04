@@ -119,6 +119,7 @@ body {
     filter: blur(100px);
     opacity: 0.45;
     pointer-events: none;
+    z-index: 0;
 }
 
 .blur1 {
