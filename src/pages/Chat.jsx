@@ -118,10 +118,20 @@ function Chat() {
     };
 
     const sendMessage = async () => {
-        if (!text.trim() || sending) return; // double click block
+        if (!text.trim() || sending) return;
         setSending(true);
         const msgText = text;
-        setText(""); // turant clear karo
+        setText("");
+
+        // Optimistic UI - turant dikhao
+        const tempMsg = {
+            _id: "temp_" + Date.now(),
+            text: msgText,
+            sender: { _id: currentUser._id },
+            pending: true
+        };
+        setMessages((prev) => [...prev, tempMsg]);
+
         try {
             const res = await fetch(`${API}/api/messages`, {
                 method: "POST",
@@ -132,14 +142,20 @@ function Chat() {
                 body: JSON.stringify({ conversationId, text: msgText })
             });
             const newMessage = await res.json();
+
+            // temp message ko real se replace karo
+            setMessages((prev) =>
+                prev.map((m) => m._id === tempMsg._id ? newMessage : m)
+            );
+
             socketRef.current.emit("sendMessage", {
                 ...newMessage,
                 receiverId: selectedUser._id
             });
-            setMessages((prev) => [...prev, newMessage]);
         } catch (err) {
-            console.log(err);
-            setText(msgText); // fail hone pe wapas text restore karo
+            // fail hone pe temp message remove karo
+            setMessages((prev) => prev.filter((m) => m._id !== tempMsg._id));
+            setText(msgText);
         } finally {
             setSending(false);
         }
@@ -205,7 +221,7 @@ function Chat() {
                                     key={msg._id}
                                     className={
                                         msg.sender?._id === currentUser?._id
-                                            ? "message my-message"
+                                            ? `message my-message${msg.pending ? " pending" : ""}`
                                             : "message other-message"
                                     }
                                 >

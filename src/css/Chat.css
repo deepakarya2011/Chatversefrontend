@@ -228,6 +228,10 @@
     border-bottom-right-radius: 4px;
 }
 
+.my-message.pending {
+    opacity: 0.6;
+}
+
 .other-message {
     align-self: flex-start;
     background: #1e293b;
