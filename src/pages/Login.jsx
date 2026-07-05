@@ -40,7 +40,6 @@ function Login({ setToken }) {
             if (response.ok) {
                 localStorage.setItem("token", data.token);
                 setToken(data.token);
-                navigate("/chat");
             } else {
                 setError(data.message || "Login failed");
             }

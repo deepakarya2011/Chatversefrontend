@@ -90,7 +90,6 @@ function Chat({ setToken }) {
     const handleSignOut = () => {
         localStorage.removeItem("token");
         setToken(null);
-        navigate("/");
     };
 
     const openChat = async (user) => {
