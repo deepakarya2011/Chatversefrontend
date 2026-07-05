@@ -27,12 +27,33 @@
 .sidebar-header {
     padding: 20px;
     border-bottom: 1px solid rgba(255,255,255,0.07);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .sidebar-header h2 {
     color: white;
     font-size: 20px;
     font-weight: 700;
+}
+
+.signout-btn {
+    background: rgba(239,68,68,0.15);
+    color: #f87171;
+    border: 1px solid rgba(239,68,68,0.2);
+    padding: 6px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    transition: .2s;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+}
+
+.signout-btn:hover, .signout-btn:active {
+    background: rgba(239,68,68,0.3);
 }
 
 .search-input {

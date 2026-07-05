@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import "../css/Chat.css";
 import { io } from "socket.io-client";
+import { useNavigate } from "react-router-dom";
 
 const API = import.meta.env.VITE_API_URL;
 
@@ -13,17 +14,29 @@ function Chat() {
     const [conversationId, setConversationId] = useState(null);
     const [text, setText] = useState("");
     const [showChat, setShowChat] = useState(false);
+    const [sending, setSending] = useState(false);
     const socketRef = useRef(null);
     const messagesEndRef = useRef(null);
     const debounceRef = useRef(null);
+    const navigate = useNavigate();
 
     const token = localStorage.getItem("token");
+
+    // Agar token nahi hai to home pe bhejo
+    useEffect(() => {
+        if (!token) navigate("/");
+    }, [token]);
 
     const fetchCurrentUser = useCallback(async () => {
         try {
             const res = await fetch(`${API}/api/auth/me`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
+            if (!res.ok) {
+                localStorage.removeItem("token");
+                navigate("/");
+                return;
+            }
             const data = await res.json();
             setCurrentUser(data);
         } catch (err) {
@@ -74,6 +87,11 @@ function Chat() {
     const getInitials = (name) =>
         name.split(" ").map((w) => w[0]).join("").toUpperCase().slice(0, 2);
 
+    const handleSignOut = () => {
+        localStorage.removeItem("token");
+        navigate("/");
+    };
+
     const openChat = async (user) => {
         setSelectedUser(user);
         setShowChat(true);
@@ -100,7 +118,10 @@ function Chat() {
     };
 
     const sendMessage = async () => {
-        if (!text.trim()) return;
+        if (!text.trim() || sending) return; // double click block
+        setSending(true);
+        const msgText = text;
+        setText(""); // turant clear karo
         try {
             const res = await fetch(`${API}/api/messages`, {
                 method: "POST",
@@ -108,7 +129,7 @@ function Chat() {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`
                 },
-                body: JSON.stringify({ conversationId, text })
+                body: JSON.stringify({ conversationId, text: msgText })
             });
             const newMessage = await res.json();
             socketRef.current.emit("sendMessage", {
@@ -116,9 +137,11 @@ function Chat() {
                 receiverId: selectedUser._id
             });
             setMessages((prev) => [...prev, newMessage]);
-            setText("");
         } catch (err) {
             console.log(err);
+            setText(msgText); // fail hone pe wapas text restore karo
+        } finally {
+            setSending(false);
         }
     };
 
@@ -129,6 +152,9 @@ function Chat() {
             <div className={`sidebar ${showChat ? "hide-mobile" : ""}`}>
                 <div className="sidebar-header">
                     <h2>💬 Chats</h2>
+                    <button className="signout-btn" onClick={handleSignOut}>
+                        Sign Out
+                    </button>
                 </div>
                 <input
                     type="text"
@@ -197,7 +223,7 @@ function Chat() {
                                 onChange={(e) => setText(e.target.value)}
                                 onKeyDown={(e) => e.key === "Enter" && sendMessage()}
                             />
-                            <button onClick={sendMessage}>
+                            <button onClick={sendMessage} disabled={sending}>
                                 ➤
                             </button>
                         </div>
