@@ -93,6 +93,7 @@ function Chat({ setToken }) {
     };
 
     const openChat = async (user) => {
+        if (selectedUser?._id === user._id) return;
         setSelectedUser(user);
         setShowChat(true);
         setMessages([]);
@@ -105,13 +106,9 @@ function Chat({ setToken }) {
                 },
                 body: JSON.stringify({ receiverId: user._id })
             });
-            const data = await res.json();
-            setConversationId(data._id);
-            const msgRes = await fetch(`${API}/api/messages/${data._id}`, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-            const msgs = await msgRes.json();
-            setMessages(msgs);
+            const { conversation, messages } = await res.json();
+            setConversationId(conversation._id);
+            setMessages(messages);
         } catch (err) {
             console.log(err);
         }
