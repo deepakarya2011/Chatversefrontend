@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 const API = import.meta.env.VITE_API_URL;
 
-function Chat() {
+function Chat({ setToken }) {
     const [users, setUsers] = useState([]);
     const [selectedUser, setSelectedUser] = useState(null);
     const [search, setSearch] = useState("");
@@ -89,6 +89,7 @@ function Chat() {
 
     const handleSignOut = () => {
         localStorage.removeItem("token");
+        setToken(null);
         navigate("/");
     };
 

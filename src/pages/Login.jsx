@@ -4,7 +4,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import Navbar from "../components/Navbar";
 import { useNavigate } from "react-router-dom";
 
-function Login() {
+function Login({ setToken }) {
 
     const [email, setEmail] = useState("");
 
@@ -39,6 +39,7 @@ function Login() {
             const data = await response.json();
             if (response.ok) {
                 localStorage.setItem("token", data.token);
+                setToken(data.token);
                 navigate("/chat");
             } else {
                 setError(data.message || "Login failed");

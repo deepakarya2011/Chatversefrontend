@@ -3,17 +3,18 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Chat from "./pages/Chat";
-
-const isLoggedIn = () => !!localStorage.getItem("token");
+import { useState } from "react";
 
 function App() {
+  const [token, setToken] = useState(localStorage.getItem("token"));
+
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={isLoggedIn() ? <Navigate to="/chat" /> : <Home />} />
-        <Route path="/login" element={isLoggedIn() ? <Navigate to="/chat" /> : <Login />} />
-        <Route path="/register" element={isLoggedIn() ? <Navigate to="/chat" /> : <Register />} />
-        <Route path="/chat" element={isLoggedIn() ? <Chat /> : <Navigate to="/" />} />
+        <Route path="/" element={token ? <Navigate to="/chat" /> : <Home />} />
+        <Route path="/login" element={token ? <Navigate to="/chat" /> : <Login setToken={setToken} />} />
+        <Route path="/register" element={token ? <Navigate to="/chat" /> : <Register />} />
+        <Route path="/chat" element={token ? <Chat setToken={setToken} /> : <Navigate to="/" />} />
       </Routes>
     </BrowserRouter>
   );
