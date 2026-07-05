@@ -35,7 +35,7 @@ function Login() {
                 setError(data.message || "Login failed");
             }
         } catch (err) {
-            setError("Error: " + err.message + " | URL: " + import.meta.env.VITE_API_URL);
+            setError("Cannot connect to server. Try again.");
         } finally {
             setLoading(false);
         }
