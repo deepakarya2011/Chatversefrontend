@@ -19,14 +19,23 @@ function Login() {
         setError("");
         setLoading(true);
         try {
-            const response = await fetch(
-                `${import.meta.env.VITE_API_URL}/api/auth/login`,
-                {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ email, password })
+            let response;
+            for (let i = 0; i < 3; i++) {
+                try {
+                    response = await fetch(
+                        `${import.meta.env.VITE_API_URL}/api/auth/login`,
+                        {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ email, password })
+                        }
+                    );
+                    break;
+                } catch {
+                    if (i === 2) throw new Error("Server not responding");
+                    await new Promise(r => setTimeout(r, 3000));
                 }
-            );
+            }
             const data = await response.json();
             if (response.ok) {
                 localStorage.setItem("token", data.token);
@@ -35,7 +44,7 @@ function Login() {
                 setError(data.message || "Login failed");
             }
         } catch (err) {
-            setError("Cannot connect to server. Try again.");
+            setError("Server is starting up, please try again in 30 seconds.");
         } finally {
             setLoading(false);
         }
@@ -93,7 +102,7 @@ function Login() {
                     </div>
 
                     <button type="submit" disabled={loading}>
-                        {loading ? "Logging in..." : "Login"}
+                        {loading ? "Connecting... please wait" : "Login"}
                     </button>
 
                 </form>
